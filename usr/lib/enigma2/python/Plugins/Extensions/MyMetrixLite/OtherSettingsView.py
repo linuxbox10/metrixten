@@ -20,7 +20,6 @@
 #######################################################################
 
 from . import _, initOtherConfig, MAIN_IMAGE_PATH
-#from boxbranding import getBoxType, getMachineBrand, getMachineName
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Components.ActionMap import ActionMap
@@ -35,7 +34,6 @@ from enigma import ePicLoad
 from os import path, statvfs
 from enigma import gMainDC, getDesktop
 
-#BoxType = getBoxType()
 BoxType = "et7x00mini"
 
 #############################################################

@@ -5,7 +5,6 @@
 #    MyMetrix
 #    Coded by iMaxxx (c) 2013
 #
-#
 #  This plugin is licensed under the Creative Commons
 #  Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 #  To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/
@@ -15,6 +14,7 @@
 #  modify it (if you keep the license), but it may not be commercially
 #  distributed other than under the conditions noted above.
 #
+#  openPLI version by Vasiliks 2017 - 2018
 #
 #######################################################################
 
@@ -25,7 +25,6 @@ from . import _, initColorsConfig, initWeatherConfig, initOtherConfig, initFonts
     SKIN_SECOND_INFOBAR_SOURCE, SKIN_SECOND_INFOBAR_TARGET, SKIN_SECOND_INFOBAR_TARGET_TMP, \
     SKIN_SECOND_INFOBAR_ECM_SOURCE, SKIN_SECOND_INFOBAR_ECM_TARGET, SKIN_SECOND_INFOBAR_ECM_TARGET_TMP, \
     SKIN_INFOBAR_LITE_SOURCE, SKIN_INFOBAR_LITE_TARGET, SKIN_INFOBAR_LITE_TARGET_TMP, \
-    SKIN_CHANNEL_SELECTION_SOURCE, SKIN_CHANNEL_SELECTION_TARGET, SKIN_CHANNEL_SELECTION_TARGET_TMP, \
     SKIN_MOVIEPLAYER_SOURCE, SKIN_MOVIEPLAYER_TARGET, SKIN_MOVIEPLAYER_TARGET_TMP, \
     SKIN_OPENPLI_SOURCE, SKIN_OPENPLI_TARGET, SKIN_OPENPLI_TARGET_TMP, \
     SKIN_PLUGINS_SOURCE, SKIN_PLUGINS_TARGET, SKIN_PLUGINS_TARGET_TMP, \
@@ -55,7 +54,6 @@ from BackupSettingsView import BackupSettingsView
 from SkinpartSettingsView import SkinpartSettingsView
 from os import path, remove, statvfs, listdir, stat as statfile
 from PIL import Image
-#from boxbranding import getBoxType
 #############################################################
 
 class MainMenuList(MenuList):
@@ -330,7 +328,7 @@ class MainSettingsView(Screen):
                         (SKIN_SECOND_INFOBAR_SOURCE, SKIN_SECOND_INFOBAR_TARGET, SKIN_SECOND_INFOBAR_TARGET_TMP),
                         #(SKIN_SECOND_INFOBAR_ECM_SOURCE, SKIN_SECOND_INFOBAR_ECM_TARGET, SKIN_SECOND_INFOBAR_ECM_TARGET_TMP),
                         #(SKIN_INFOBAR_LITE_SOURCE, SKIN_INFOBAR_LITE_TARGET, SKIN_INFOBAR_LITE_TARGET_TMP),
-                        (SKIN_CHANNEL_SELECTION_SOURCE, SKIN_CHANNEL_SELECTION_TARGET, SKIN_CHANNEL_SELECTION_TARGET_TMP),
+#                        (SKIN_CHANNEL_SELECTION_SOURCE, SKIN_CHANNEL_SELECTION_TARGET, SKIN_CHANNEL_SELECTION_TARGET_TMP),
                         (SKIN_MOVIEPLAYER_SOURCE, SKIN_MOVIEPLAYER_TARGET, SKIN_MOVIEPLAYER_TARGET_TMP),
                         #(SKIN_OPENPLI_SOURCE, SKIN_OPENPLI_TARGET, SKIN_OPENPLI_TARGET_TMP),
                         #(SKIN_PLUGINS_SOURCE, SKIN_PLUGINS_TARGET, SKIN_PLUGINS_TARGET_TMP),
@@ -343,7 +341,7 @@ class MainSettingsView(Screen):
                         (SKIN_SECOND_INFOBAR_SOURCE, SKIN_SECOND_INFOBAR_TARGET, SKIN_SECOND_INFOBAR_TARGET_TMP),
                         (SKIN_SECOND_INFOBAR_ECM_SOURCE, SKIN_SECOND_INFOBAR_ECM_TARGET, SKIN_SECOND_INFOBAR_ECM_TARGET_TMP),
                         (SKIN_INFOBAR_LITE_SOURCE, SKIN_INFOBAR_LITE_TARGET, SKIN_INFOBAR_LITE_TARGET_TMP),
-                        (SKIN_CHANNEL_SELECTION_SOURCE, SKIN_CHANNEL_SELECTION_TARGET, SKIN_CHANNEL_SELECTION_TARGET_TMP),
+#                        (SKIN_CHANNEL_SELECTION_SOURCE, SKIN_CHANNEL_SELECTION_TARGET, SKIN_CHANNEL_SELECTION_TARGET_TMP),
                         (SKIN_MOVIEPLAYER_SOURCE, SKIN_MOVIEPLAYER_TARGET, SKIN_MOVIEPLAYER_TARGET_TMP),
                         (SKIN_OPENPLI_SOURCE, SKIN_OPENPLI_TARGET, SKIN_OPENPLI_TARGET_TMP),
                         (SKIN_PLUGINS_SOURCE, SKIN_PLUGINS_TARGET, SKIN_PLUGINS_TARGET_TMP),
@@ -468,25 +466,6 @@ class MainSettingsView(Screen):
             xFile.close()
 
             ################
-            # ChannelSelection
-            ################
-
-            channelSelectionSkinSearchAndReplace = []
-
-            primetime = ""
-            if config.plugins.MyMetrixLiteOther.channelSelectionShowPig.getValue() is True:
-                channelSelectionSkinSearchAndReplace.append(['<panel name="CHANNELSELECTION-1" />', '<panel name="SlimChannelSelection" />'])
-            else:
-                if int(config.plugins.MyMetrixLiteOther.SkinDesign.value) > 1 and (config.plugins.MyMetrixLiteOther.channelSelectionStyle.value == "CHANNELSELECTION-1" or config.plugins.MyMetrixLiteOther.channelSelectionStyle.value == "CHANNELSELECTION-2") and config.plugins.MyMetrixLiteOther.channelSelectionShowPrimeTime.value:
-                    primetime = "P" 
-                channelSelectionSkinSearchAndReplace.append(['<panel name="CHANNELSELECTION-1" />', '<panel name="%s%s" />' % (config.plugins.MyMetrixLiteOther.channelSelectionStyle.getValue(),primetime)])
-            skin_lines = appendSkinFile(SKIN_CHANNEL_SELECTION_SOURCE, channelSelectionSkinSearchAndReplace)
-            xFile = open(SKIN_CHANNEL_SELECTION_TARGET_TMP, "w")
-            for xx in skin_lines:
-                xFile.writelines(xx)
-            xFile.close()
-
-            ################
             # MoviePlayer
             ################
             moviePlayerSkinSearchAndReplace = []
@@ -544,210 +523,6 @@ class MainSettingsView(Screen):
                 xFile.writelines(xx)
             xFile.close()
 
-            ################
-            # EMC
-            ################
-#
-#            EMCSkinSearchAndReplace = []
-#
-#            if config.plugins.MetrixWeather.MoviePlayer.getValue() is False or config.plugins.MetrixWeather.enabled.getValue() is False:
-#                EMCSkinSearchAndReplace.append(['<panel name="INFOBARWEATHERWIDGET" />', ''])
-#
-#            if config.plugins.MyMetrixLiteOther.showSTBinfoMoviePlayer.getValue() is True:
-#                if config.plugins.MyMetrixLiteOther.InfoBarMoviePlayerDesign.getValue() == "1":
-#                    EMCSkinSearchAndReplace.append(['<!--panel name="STBINFOMOVIEPLAYER" /-->', '<panel name="STBINFOMOVIEPLAYER" />'])
-#                else:
-#                    EMCSkinSearchAndReplace.append(['<!--panel name="STBINFO" /-->', '<panel name="STBINFO" />'])
-#
-#            if config.plugins.MyMetrixLiteOther.showInfoBarClockMoviePlayer.getValue() is False:
-#                EMCSkinSearchAndReplace.append(['<panel name="CLOCKWIDGET" />', ''])
-#
-#            if config.plugins.MyMetrixLiteOther.showEMCMediaCenterCover.getValue() == "small":
-#                if config.plugins.MyMetrixLiteOther.showEMCMediaCenterCoverInfobar.getValue() is True and config.plugins.MyMetrixLiteOther.InfoBarMoviePlayerDesign.getValue() == "2":
-#                    if config.plugins.MyMetrixLiteOther.showMovieName.value:
-#                        EMCSkinSearchAndReplace.append(['<panel name="EMCMediaCenterCover_no" />', '<panel name="EMCMediaCenterCover_small_infobar" />'])
-#                    else:
-#                        EMCSkinSearchAndReplace.append(['<panel name="EMCMediaCenterCover_no" />', '<panel name="EMCMediaCenterCover_large_infobar" />'])
-#                else:
-#                    EMCSkinSearchAndReplace.append(['<panel name="EMCMediaCenterCover_no" />', '<panel name="EMCMediaCenterCover_small" />'])
-#            elif config.plugins.MyMetrixLiteOther.showEMCMediaCenterCover.getValue() == "large":
-#                EMCSkinSearchAndReplace.append(['<panel name="EMCMediaCenterCover_no" />', '<panel name="EMCMediaCenterCover_large" />'])
-#
-#            if config.plugins.MyMetrixLiteOther.showEMCSelectionCover.getValue() == "small":
-#                EMCSkinSearchAndReplace.append(['<panel name="EMCSelectionCover_no" />', '<panel name="EMCSelectionCover_small" />'])
-#            elif config.plugins.MyMetrixLiteOther.showEMCSelectionCover.getValue() == "large":
-#                EMCSkinSearchAndReplace.append(['<panel name="EMCSelectionCover_no" />', '<panel name="EMCSelectionCover_large" />'])
-#                if config.plugins.MyMetrixLiteOther.showEMCSelectionCoverLargeDescription.getValue() is False:
-#                    EMCSkinSearchAndReplace.append(['<panel name="EMCSelectionCover_large_description_on" />', '<panel name="EMCSelectionCover_large_description_off" />'])
-#
-#            posNR = False
-#            progress = False
-#            if not self.applyChangesFirst:
-#                try:
-#                    config.EMC.skin_able.setValue(True)
-#                    config.EMC.use_orig_skin.setValue(False)
-#                    if config.plugins.MyMetrixLiteOther.showEMCSelectionCover.value != 'no': config.EMC.movie_cover.setValue(True)
-#                    config.EMC.save()
-#                    posNR = config.EMC.movie_picons_pos.getValue() == "nr"
-#                    progress = 'P' in config.EMC.movie_progress.value
-#                except:
-#                    print "Error: find emc config - it's not installed ?"
-#            else:
-#                f=open("/etc/enigma2/settings", "r")
-#                s=f.read()
-#                f.close()
-#                posNR = "config.EMC.movie_picons_pos=nr" in s
-#                progress = "config.EMC.movie_progress=P" in s or not "config.EMC.movie_progress=" in s
-#
-#            sizeW = 700
-#            sizeH = 480
-#            gap = 5
-#            margin = 2
-#            scale = config.plugins.MyMetrixLiteFonts.epgtext_scale.value / 95.0 # 95% standard scale
-#            if config.plugins.MyMetrixLiteOther.showMovieListScrollbar.value:
-#                sizeW = 686 # place for scrollbar
-#                EMCSkinSearchAndReplace.append(['foregroundColor="layer-a-foreground" scrollbarMode="showNever" transparent="1" />', 'foregroundColor="layer-a-foreground" scrollbarMode="showOnDemand" transparent="1" />' ])
-#
-#            if config.plugins.MyMetrixLiteOther.showEMCSelectionRows.value == "+8":
-#                itemHeight = 20
-#                rowfactor = itemHeight / 30.0
-#                offsetHicon = 0
-#                offsetHbar = -2
-#            elif config.plugins.MyMetrixLiteOther.showEMCSelectionRows.value == "+6":
-#                sizeH = 484
-#                itemHeight = 22
-#                rowfactor = itemHeight / 30.0
-#                offsetHicon = 0
-#                offsetHbar = -2
-#            elif config.plugins.MyMetrixLiteOther.showEMCSelectionRows.value == "+4":
-#                itemHeight = 24
-#                rowfactor = itemHeight / 30.0
-#                offsetHicon = 0
-#                offsetHbar = -2
-#            elif config.plugins.MyMetrixLiteOther.showEMCSelectionRows.value == "+2":
-#                sizeH = 486
-#                itemHeight = 27
-#                rowfactor = itemHeight / 30.0
-#                offsetHicon = 1
-#                offsetHbar = -1
-#            elif config.plugins.MyMetrixLiteOther.showEMCSelectionRows.value == "-2":
-#                sizeH = 476
-#                itemHeight = 34
-#                rowfactor = itemHeight / 30.0
-#                offsetHicon = 1
-#                offsetHbar = 1
-#            elif config.plugins.MyMetrixLiteOther.showEMCSelectionRows.value == "-4":
-#                itemHeight = 40
-#                rowfactor = itemHeight / 30.0
-#                offsetHicon = 3
-#                offsetHbar = 4
-#            else:
-#                itemHeight = 30
-#                rowfactor = 1
-#                offsetHicon = 0
-#                offsetHbar = 0
-#
-#            #font
-#            CoolFont = int(20 * rowfactor)
-#            CoolSelectFont = int(17 * rowfactor)
-#            CoolDateFont = int(20 * rowfactor)
-#            #height
-#            CoolBarSizeV = int(10 * rowfactor)
-#            CoolPiconHPos = 2
-#            CoolPiconHeight = itemHeight - CoolPiconHPos * 2
-#            CoolIconHPos = 3 + offsetHicon
-#            CoolBarHPos = 12 + offsetHbar
-#            CoolMovieHPos = 1 + offsetHicon
-#            CoolDateHPos = 1 + offsetHicon
-#            CoolProgressHPos = 1 + offsetHicon
-#            #width
-#            if progress:
-#                CoolBarSizeH = int(config.plugins.MyMetrixLiteOther.setEMCbarsize.value)
-#            else:
-#                CoolBarSizeH = 0
-#            CoolDateWidth = int(int(config.plugins.MyMetrixLiteOther.setEMCdatesize.value) * scale * rowfactor)
-#            CoolPiconWidth = int(CoolPiconHeight * 1.73)
-#            CoolCSDirInfoWidth = int(int(config.plugins.MyMetrixLiteOther.setEMCdirinfosize.value) * scale * rowfactor)
-#            CoolFolderSize = sizeW - CoolCSDirInfoWidth - gap  - margin - 35 # 35 is progressbar position
-#            if not CoolCSDirInfoWidth:
-#                CoolFolderSize = sizeW - 35# - margin
-#            CoolMoviePos = 35 + CoolBarSizeH  + gap
-#            if not CoolBarSizeH:
-#                CoolMoviePos = 35
-#            CoolMovieSize = sizeW - CoolDateWidth - CoolMoviePos - gap - margin
-#            if not CoolDateWidth:
-#                CoolMovieSize = sizeW - CoolMoviePos# - margin
-#            CoolMoviePiconSize = CoolMovieSize - CoolPiconWidth - gap
-#            CoolDatePos = sizeW - CoolDateWidth - margin
-#            CoolCSPos = sizeW - CoolCSDirInfoWidth - margin
-#
-#            EMCSkinSearchAndReplace.append(['size="700,480" itemHeight="30" CoolFont="epg_text;20" CoolSelectFont="epg_text;17" CoolDateFont="epg_text;20"'\
-#                                           ,'size="700,%s" itemHeight="%s" CoolFont="epg_text;%s" CoolSelectFont="epg_text;%s" CoolDateFont="epg_text;%s"' %(sizeH, itemHeight, CoolFont, CoolSelectFont, CoolDateFont) ])
-#
-#            EMCSkinSearchAndReplace.append(['size="700,240" itemHeight="30" CoolFont="epg_text;20" CoolSelectFont="epg_text;18" CoolDateFont="epg_text;20"'\
-#                                           ,'size="700,%s" itemHeight="%s" CoolFont="epg_text;%s" CoolSelectFont="epg_text;%s" CoolDateFont="epg_text;%s"' %(sizeH/2, itemHeight, CoolFont, CoolSelectFont, CoolDateFont) ])
-#
-#            EMCSkinSearchAndReplace.append(['CoolProgressHPos="1" CoolIconPos="5" CoolIconHPos="3" CoolIconSize="24,24" CoolBarPos="32" CoolBarHPos="12" CoolBarSize="50,10" CoolBarSizeSa="50,10" CoolMoviePos="88"'\
-#                                           ,'CoolProgressHPos="%s" CoolIconPos="5" CoolIconHPos="%s" CoolIconSize="24,24" CoolBarPos="32" CoolBarHPos="%s" CoolBarSize="%s,%s" CoolBarSizeSa="%s,%s" CoolMoviePos="%s"' %(CoolProgressHPos, CoolIconHPos, CoolBarHPos, CoolBarSizeH, CoolBarSizeV, CoolBarSizeH, CoolBarSizeV, CoolMoviePos - margin) ])
-#
-#            CoolMoviePiconPos = CoolMoviePos + CoolPiconWidth + gap - margin
-#            CoolPiconPos = CoolMoviePos - margin
-#            EMCSkinSearchAndReplace.append(['CoolMovieHPos="1" CoolMovieSize="495" CoolFolderSize="475" CoolDatePos="591" CoolDateHPos="1" CoolDateWidth="104" CoolPiconPos="90" CoolPiconHPos="2" CoolPiconWidth="45" CoolPiconHeight="26" CoolMoviePiconPos="140" CoolMoviePiconSize="445" CoolCSWidth="140" CoolDirInfoWidth="140" CoolCSPos="555"'\
-#                                           ,'CoolMovieHPos="%s" CoolMovieSize="%s" CoolFolderSize="%s" CoolDatePos="%s" CoolDateHPos="%s" CoolDateWidth="%s" CoolPiconPos="%s" CoolPiconHPos="%s" CoolPiconWidth="%s" CoolPiconHeight="%s" CoolMoviePiconPos="%s" CoolMoviePiconSize="%s" CoolCSWidth="%s" CoolDirInfoWidth="%s" CoolCSPos="%s"' %(CoolMovieHPos, CoolMovieSize, CoolFolderSize, CoolDatePos, CoolDateHPos, CoolDateWidth, CoolPiconPos, CoolPiconHPos, CoolPiconWidth, CoolPiconHeight, CoolMoviePiconPos, CoolMoviePiconSize, CoolCSDirInfoWidth, CoolCSDirInfoWidth, CoolCSPos) ])
-#
-#            CoolMoviePiconPos = CoolMoviePos - margin
-#            CoolPiconPos = CoolDatePos - CoolPiconWidth - gap - margin
-#            if not CoolDateWidth:
-#                CoolPiconPos = CoolDatePos - CoolPiconWidth
-#            EMCSkinSearchAndReplace.append(['CoolMovieHPos="1" CoolMovieSize="495" CoolFolderSize="475" CoolDatePos="591" CoolDateHPos="1" CoolDateWidth="104" CoolPiconPos="540" CoolPiconHPos="2" CoolPiconWidth="45" CoolPiconHeight="26" CoolMoviePiconPos="90" CoolMoviePiconSize="445" CoolCSWidth="140" CoolDirInfoWidth="140" CoolCSPos="555"'\
-#                                           ,'CoolMovieHPos="%s" CoolMovieSize="%s" CoolFolderSize="%s" CoolDatePos="%s" CoolDateHPos="%s" CoolDateWidth="%s" CoolPiconPos="%s" CoolPiconHPos="%s" CoolPiconWidth="%s" CoolPiconHeight="%s" CoolMoviePiconPos="%s" CoolMoviePiconSize="%s" CoolCSWidth="%s" CoolDirInfoWidth="%s" CoolCSPos="%s"' %(CoolMovieHPos, CoolMovieSize, CoolFolderSize, CoolDatePos, CoolDateHPos, CoolDateWidth, CoolPiconPos, CoolPiconHPos, CoolPiconWidth, CoolPiconHeight, CoolMoviePiconPos, CoolMoviePiconSize, CoolCSDirInfoWidth, CoolCSDirInfoWidth, CoolCSPos) ])
-#
-#            if posNR:
-#                EMCSkinSearchAndReplace.append(['<panel name="EMCSelectionList_picon_left" />', '<panel name="EMCSelectionList_picon_right" />'])
-#                EMCSkinSearchAndReplace.append(['<panel name="EMCSelectionList_large_description_picon_left" />', '<panel name="EMCSelectionList_large_description_picon_right" />'])
-#
-#            namepos = "30,465"
-#            if config.plugins.MyMetrixLiteOther.InfoBarMoviePlayerDesign.getValue() == "2":
-#                if config.plugins.MyMetrixLiteOther.showMoviePlayerResolutionExtended.getValue() is True:
-#                    EMCSkinSearchAndReplace.append(['<panel name="RESOLUTIONMOVIEPLAYER" />', '<panel name="RESOLUTIONMOVIEPLAYER-2" />' ])
-#            else:
-#                EMCSkinSearchAndReplace.append(['<panel name="EMCMediaCenter_2" />', '<panel name="EMCMediaCenter_%s" />' %(config.plugins.MyMetrixLiteOther.InfoBarMoviePlayerDesign.value)])
-#                if config.plugins.MyMetrixLiteOther.InfoBarMoviePlayerDesign.getValue() == "3":
-#                    namepos = "30,535"
-#
-#            channelNameXML = self.getChannelNameXML(
-#                namepos,
-#                config.plugins.MyMetrixLiteOther.infoBarChannelNameFontSize.getValue(),
-#                #config.plugins.MyMetrixLiteOther.showChannelNumber.getValue(),
-#                False,
-#                config.plugins.MyMetrixLiteOther.showMovieName.getValue()
-#            )
-#            EMCSkinSearchAndReplace.append(['<panel name="MOVIENAME" />', channelNameXML])
-#
-#            if config.plugins.MyMetrixLiteOther.showMovieTime.getValue() == "2":
-#                EMCSkinSearchAndReplace.append(['<panel name="EMCMediaCenter_2_time" />', '<panel name="EMCMediaCenter_' + config.plugins.MyMetrixLiteOther.InfoBarMoviePlayerDesign.getValue() + '_time" />' ])
-#            else:
-#                EMCSkinSearchAndReplace.append(['<panel name="EMCMediaCenter_2_time" />', '' ])
-#
-#            EMCSkinSearchAndReplace.append(['WatchingColor="#D8C100"', 'WatchingColor="#' + config.plugins.MyMetrixLiteColors.emcWatchingColor.value + '"' ])
-#            EMCSkinSearchAndReplace.append(['FinishedColor="#5FA816"', 'FinishedColor="#' + config.plugins.MyMetrixLiteColors.emcFinishedColor.value + '"' ])
-#            EMCSkinSearchAndReplace.append(['RecordingColor="#E51400"', 'RecordingColor="#' + config.plugins.MyMetrixLiteColors.emcRecordingColor.value + '"' ])
-#
-#            if config.plugins.MyMetrixLiteColors.emcCoolHighlightColor.getValue() is False:
-#                EMCSkinSearchAndReplace.append(['CoolHighlightColor="1"', 'CoolHighlightColor="0"' ])
-#
-#            if config.plugins.MyMetrixLiteOther.showMovieListRunningtext.value:
-#                delay = str(config.plugins.MyMetrixLiteOther.runningTextStartdelay.value)
-#                speed = str(config.plugins.MyMetrixLiteOther.runningTextSpeed.value)
-#                EMCSkinSearchAndReplace.append(['render="MetrixHDRunningText" options="movetype=none,startdelay=600,steptime=60', 'render="MetrixHDRunningText" options="movetype=running,startdelay=%s,steptime=%s' %(delay,speed)])
-#
-#            skin_lines = appendSkinFile(SKIN_EMC_SOURCE, EMCSkinSearchAndReplace)
-#
-#            xFile = open(SKIN_EMC_TARGET_TMP, "w")
-#            for xx in skin_lines:
-#                xFile.writelines(xx)
-#            xFile.close()
-#
             ################
             # Design
             ################
@@ -931,7 +706,7 @@ class MainSettingsView(Screen):
                     DESIGNSkinSearchAndReplace.append(['<panel name="PVRState_1" />', '<panel name="PVRState_2" />' ])
 
             #graphical epg style
-            
+
             if config.plugins.MyMetrixLiteOther.graphicalEpgStyle.getValue() == "2":
                 DESIGNSkinSearchAndReplace.append(['<panel name="GraphicalEPG_1" />', '<panel name="GraphicalEPG_2" />' ])
                 DESIGNSkinSearchAndReplace.append(['<panel name="GraphicalEPGPIG_1" />', '<panel name="GraphicalEPGPIG_2" />' ])
@@ -1374,7 +1149,7 @@ class MainSettingsView(Screen):
                 skinSearchAndReplace.append(['skin_00b_SecondInfoBar.xml', 'skin_00b_SecondInfoBar.MySkin.xml'])
                 skinSearchAndReplace.append(['skin_00c_SecondInfoBarECM.xml', 'skin_00c_SecondInfoBarECM.MySkin.xml'])
                 skinSearchAndReplace.append(['skin_00d_InfoBarLite.xml', 'skin_00d_InfoBarLite.MySkin.xml'])
-                skinSearchAndReplace.append(['skin_00e_ChannelSelection.xml', 'skin_00e_ChannelSelection.MySkin.xml'])
+#                skinSearchAndReplace.append(['skin_00e_ChannelSelection.xml', 'skin_00e_ChannelSelection.MySkin.xml'])
                 skinSearchAndReplace.append(['skin_00f_MoviePlayer.xml', 'skin_00f_MoviePlayer.MySkin.xml'])
                 skinSearchAndReplace.append(['skin_00g_EMC.xml', 'skin_00g_EMC.MySkin.xml'])
                 skinSearchAndReplace.append(['skin_00o_openpli.xml', 'skin_00o_openpli.MySkin.xml'])
@@ -1387,14 +1162,14 @@ class MainSettingsView(Screen):
                 skinSearchAndReplace.append(['skin_00b_SecondInfoBar.xml', 'skin_00b_SecondInfoBar.MySkin.xml'])
                 #skinSearchAndReplace.append(['skin_00c_SecondInfoBarECM.xml', 'skin_00c_SecondInfoBarECM.MySkin.xml'])
                 #skinSearchAndReplace.append(['skin_00d_InfoBarLite.xml', 'skin_00d_InfoBarLite.MySkin.xml'])
-                skinSearchAndReplace.append(['skin_00e_ChannelSelection.xml', 'skin_00e_ChannelSelection.MySkin.xml'])
+#                skinSearchAndReplace.append(['skin_00e_ChannelSelection.xml', 'skin_00e_ChannelSelection.MySkin.xml'])
                 skinSearchAndReplace.append(['skin_00f_MoviePlayer.xml', 'skin_00f_MoviePlayer.MySkin.xml'])
                 skinSearchAndReplace.append(['skin_00g_EMC.xml', 'skin_00g_EMC.MySkin.xml'])
                 #skinSearchAndReplace.append(['skin_00o_openpli.xml', 'skin_00o_openpli.MySkin.xml'])
                 #skinSearchAndReplace.append(['skin_00p_plugins.xml', 'skin_00p_plugins.MySkin.xml'])
                 #skinSearchAndReplace.append(['skin_00u_screens_unchecked.xml', 'skin_00u_screens_unchecked.MySkin.xml'])
-                skinSearchAndReplace.append(['skin_00z_design.xml', 'skin_00z_design.MySkin.xml']) 
-                
+                skinSearchAndReplace.append(['skin_00z_design.xml', 'skin_00z_design.MySkin.xml'])
+
             #skinparts
             skinpartdir='/usr/share/enigma2/MetrixHD/skinparts/'
             skinparts = ''
@@ -1429,12 +1204,24 @@ class MainSettingsView(Screen):
                             skinparts += '\n\t<include filename="%s" />' %partpath
                         else:
                             skinparts = '<include filename="%s" />' %partpath
-                                                                   
+
             if skinparts:
                 skinSearchAndReplace.append(['<!-- placeholder_skinparts /-->', skinparts])
-                
+
             if config.plugins.MyMetrixLiteOther.epgGrafShowPig.value:
                 skinSearchAndReplace.append(['<panel name="GraphicalEPG" />', '<panel name="GraphicalEPGPIG" />'])
+
+            ################
+            # ChannelSelection
+            ################
+
+            primetime = ""
+            if config.plugins.MyMetrixLiteOther.channelSelectionShowPig.getValue() is True:
+                skinSearchAndReplace.append(['<panel name="CHANNELSELECTION-1" />', '<panel name="ChannelSelectionPig" />'])
+            else:
+                if int(config.plugins.MyMetrixLiteOther.SkinDesign.value) > 1 and (config.plugins.MyMetrixLiteOther.channelSelectionStyle.value == "CHANNELSELECTION-1" or config.plugins.MyMetrixLiteOther.channelSelectionStyle.value == "CHANNELSELECTION-2") and config.plugins.MyMetrixLiteOther.channelSelectionShowPrimeTime.value:
+                    primetime = "P"
+                skinSearchAndReplace.append(['<panel name="CHANNELSELECTION-1" />', '<panel name="%s%s" />' % (config.plugins.MyMetrixLiteOther.channelSelectionStyle.getValue(),primetime)])
 
             #make skin file
             skin_lines = appendSkinFile(SKIN_SOURCE, skinSearchAndReplace)
@@ -1454,7 +1241,7 @@ class MainSettingsView(Screen):
             ################
             # EHD-skin
             ################
-                                                                     
+
             #function "optionEHD" variables
             self.skinline_error = False
             self.pixmap_error = False
@@ -1530,7 +1317,7 @@ class MainSettingsView(Screen):
                             remove(file[1])
                     for file in skinfiles_HD:
                         if path.exists(file[2]):
-                            move(file[2],file[1])                     
+                            move(file[2],file[1])
 
             #remove old _TMP files
             for file in skinfiles_EHD:
@@ -1882,7 +1669,7 @@ class MainSettingsView(Screen):
         f_offset = self.font_offset
 
         f = open(sourceFile, "r")
-        f1 = open(targetFile, "w")          
+        f1 = open(targetFile, "w")
 
         i = 0
         i_save = i
@@ -1891,8 +1678,8 @@ class MainSettingsView(Screen):
             try:
 #start additional files
                 if self.EHD_addfiles:
-#file 'antilogo.xml'                                                    
-                    if sourceFile == "/etc/enigma2/antilogo.xml":           
+#file 'antilogo.xml'
+                    if sourceFile == "/etc/enigma2/antilogo.xml":
 #height="88"
                         if 'height="' in line and not 'alias name="' in line:
                             s = 0
@@ -1916,7 +1703,7 @@ class MainSettingsView(Screen):
                                 y = line[(n2+1):n3]
                                 ynew = str(int(round(float(int(y)*FACT),r_par)))
                                 strnew = line[n1:n2+1] + ynew
-                                line = line[:n1] + strnew + line[n3:]   
+                                line = line[:n1] + strnew + line[n3:]
 #width="95"
                         if 'width="' in line:
                             s = 0
@@ -1928,7 +1715,7 @@ class MainSettingsView(Screen):
                                 x = line[(n2+1):n3]
                                 ynew = str(int(round(float(int(x)*FACT),r_par)))
                                 strnew = line[n1:n2+1] + ynew
-                                line = line[:n1] + strnew + line[n3:] 
+                                line = line[:n1] + strnew + line[n3:]
 #x="1088"
                         if 'x="' in line:
                             s = 0
@@ -3271,4 +3058,3 @@ class MainSettingsView(Screen):
             self["helpertext"].setText(cur[0][2])
         else:
             self["helpertext"].setText(" ")
-
